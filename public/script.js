@@ -1,6 +1,38 @@
+const positiveListDOM = document.getElementById("positive-list");
+const negativeListDOM = document.getElementById("negative-list");
 let inputContent = "";
 let inputType = 1;
+
 onSearch();
+
+/**
+ * リスト作成の前処理
+ * @param {*} data 
+ */
+function preCreateList (data) {
+  data.forEach(e => {
+    let list;
+    if (e.type === 1) {
+      list = positiveListDOM;
+    } else {
+      list = negativeListDOM;
+    }
+    console.log("pre", list, e.content);
+    createList(list, e);
+  });
+}
+
+/**
+ * リストの作成
+ * @param {*} list 
+ * @param {*} data 
+ */
+function createList (list, data) {
+  const li = document.createElement("li");
+  const content = document.createTextNode(data.content);
+  li.appendChild(content);
+  list.appendChild(li);
+}
 
 /**
  * Idea一覧を取得
@@ -9,6 +41,8 @@ function onSearch () {
   get({},
   (res) => {
     console.log(res);
+    console.log(positiveListDOM, negativeListDOM);
+    preCreateList(res.data);
   },
   (err) => {
     console.log(err);
