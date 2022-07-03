@@ -1,9 +1,41 @@
 const positiveListDOM = document.getElementById("positive-list");
 const negativeListDOM = document.getElementById("negative-list");
+const formSectionDOM = document.querySelector(".form-section");
+const radioDOM = document.getElementsByName("idea-type");
 let inputContent = "";
 let inputType = 1;
 
 onSearch();
+
+/**
+ * 追加ボタン押下時
+ */
+formSectionDOM.addEventListener("submit", (e) => {
+  e.preventDefault();
+  inputContent = e.target[2].value;
+  inputType = checkType();
+  if (!inputContent) {
+    return;
+  }
+  console.log(inputContent, inputType);
+  onSave();
+})
+
+/**
+ * ラジオボタンの値チェック
+ */
+function checkType () {
+  console.log(radioDOM);
+  let type;
+  radioDOM.forEach(e => {
+    if (e.checked) {
+      type = e.value;
+      console.log(type);
+      return;
+    }
+  });
+  return type
+}
 
 /**
  * リスト作成の前処理
@@ -59,6 +91,7 @@ function onSave () {
   },
   (res) => {
     console.log(res);
+    onSearch();
   },
   (err) => {
     console.log(err);
