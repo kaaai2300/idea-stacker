@@ -1,3 +1,7 @@
 .list-container {
   display: flex;
 }
+
+.list {
+  list-style: none;
+}

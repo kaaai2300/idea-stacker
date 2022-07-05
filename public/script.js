@@ -34,7 +34,7 @@ function checkType () {
       return;
     }
   });
-  return type
+  return type;
 }
 
 /**
@@ -61,15 +61,33 @@ function preCreateList (data) {
  */
 function createList (list, data) {
   const li = document.createElement("li");
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  const label = document.createElement("label");
   const content = document.createTextNode(data.content);
-  li.appendChild(content);
+  label.appendChild(checkbox);
+  label.appendChild(content);
+  li.appendChild(label);
   list.appendChild(li);
+}
+
+/**
+ * リストの要素をクリアする
+ */
+function onClear () {
+  while (positiveListDOM.firstChild) {
+    positiveListDOM.removeChild(positiveListDOM.firstChild);
+  }
+  while (negativeListDOM.firstChild) {
+    negativeListDOM.removeChild(negativeListDOM.firstChild);
+  }
 }
 
 /**
  * Idea一覧を取得
  */
 function onSearch () {
+  onClear();
   get({},
   (res) => {
     console.log(res);
