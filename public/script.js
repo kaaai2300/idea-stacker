@@ -1,6 +1,7 @@
 const positiveListDOM = document.getElementById("positive-list");
 const negativeListDOM = document.getElementById("negative-list");
-const formSectionDOM = document.querySelector(".form-section");
+const registFormSectionDOM = document.querySelector(".regist-form-section");
+const deleteFormSectionDOM = document.querySelector(".delete-form-section");
 const radioDOM = document.getElementsByName("idea-type");
 let inputContent = "";
 let inputType = 1;
@@ -10,7 +11,7 @@ onSearch();
 /**
  * 追加ボタン押下時
  */
-formSectionDOM.addEventListener("submit", (e) => {
+ registFormSectionDOM.addEventListener("submit", (e) => {
   e.preventDefault();
   inputContent = e.target[2].value;
   inputType = checkType();
@@ -19,7 +20,38 @@ formSectionDOM.addEventListener("submit", (e) => {
   }
   console.log(inputContent, inputType);
   onSave();
-})
+});
+
+/**
+ * 削除ボタン押下時
+ */
+deleteFormSectionDOM.addEventListener("submit", (e) => {
+  e.preventDefault();
+  let deleteItemIdList = [];
+  let positiveElementCount = positiveListDOM.childElementCount;
+  for (let i = 0; i < positiveElementCount; i++) {
+    const e = positiveListDOM.children[i].querySelector("input");
+    if (e.checked) {
+      deleteItemIdList.push({
+        _id: e.value
+      });
+    }
+  }
+  let negativeElementCount = negativeListDOM.childElementCount;
+  for (let i = 0; i < negativeElementCount; i++) {
+    const e = negativeListDOM.children[i].querySelector("input");
+    if (e.checked) {
+      deleteItemIdList.push({
+        _id: e.value
+      });
+    }
+  }
+  console.log("削除", deleteItemIdList);
+  const data = {
+    deleteItemIdList: deleteItemIdList
+  }
+  onDelete(data);
+});
 
 /**
  * ラジオボタンの値チェック
@@ -49,7 +81,6 @@ function preCreateList (data) {
     } else {
       list = negativeListDOM;
     }
-    console.log("pre", list, e.content);
     createList(list, e);
   });
 }
@@ -63,6 +94,7 @@ function createList (list, data) {
   const li = document.createElement("li");
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
+  checkbox.value = data._id
   const label = document.createElement("label");
   const content = document.createTextNode(data.content);
   label.appendChild(checkbox);
@@ -117,6 +149,22 @@ function onSave () {
 }
 
 /**
+ * 削除処理
+ * @param {*} data 
+ */
+function onDelete (data) {
+  deleteFunc({
+    deleteItemIdList: data.deleteItemIdList
+  },
+  (res) => {
+    console.log(res);
+  },
+  (err) => {
+    console.log(err);
+  });
+}
+
+/**
  * API接続 GET
  * @param {*} url 
  * @param {*} params 
@@ -142,6 +190,24 @@ async function get(params, successFunc, faildFunc) {
 async function post(body, successFunc, faildFunc) {
   try {
     const res = await axios.post("http://localhost:3000/idea", body);
+    successFunc(res);
+  } catch (err) {
+    faildFunc(err);
+  }
+}
+
+/**
+ * API接続 DELETE
+ * @param {*} params 
+ * @param {*} successFunc 
+ * @param {*} faildFunc 
+ */
+async function deleteFunc(params, successFunc, faildFunc) {
+  try {
+    console.log(params);
+    const res = await axios.delete("http://localhost:3000/idea", {
+      data: params
+    });
     successFunc(res);
   } catch (err) {
     faildFunc(err);

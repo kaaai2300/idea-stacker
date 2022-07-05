@@ -10,8 +10,8 @@
 <body>
   <div>
     <h1>IDEA STACKER</h1>
-    <div class="form-container">
-      <form class="form-section">
+    <div class="regist-form-container">
+      <form class="regist-form-section">
         <input type="radio" name="idea-type" value="1" checked id="positive-radio">ポジティブ
         <input type="radio" name="idea-type" value="2" id="negative-radio">ネガティブ
         <p>アイデア</p>
@@ -24,6 +24,11 @@
       </ul>
       <ul class="list" id="negative-list">
       </ul>
+    </div>
+    <div>
+      <form class="delete-form-section">
+        <button type="submit" id="delete-button">削除</button>
+      </form>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

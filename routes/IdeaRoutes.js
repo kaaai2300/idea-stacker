@@ -29,5 +29,15 @@ app.post("/idea", async(req, res) => {
   }
 });
 
+/** データの削除 */
+app.delete("/idea", async(req, res) => {
+  console.log("削除API", req.body);
+
+  try {
+    res.send();
+  } catch {
+    res.status(500).send(err);
+  }
+});
 
 module.exports = app;
