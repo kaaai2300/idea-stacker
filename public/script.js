@@ -3,6 +3,7 @@ const negativeListDOM = document.getElementById("negative-list");
 const registFormSectionDOM = document.querySelector(".regist-form-section");
 const deleteFormSectionDOM = document.querySelector(".delete-form-section");
 const radioDOM = document.getElementsByName("idea-type");
+const inputTextDOM = document.getElementById("idea-text");
 let inputContent = "";
 let inputType = 1;
 
@@ -13,7 +14,6 @@ onSearch();
  */
  registFormSectionDOM.addEventListener("submit", (e) => {
   e.preventDefault();
-  inputContent = e.target[2].value;
   inputType = checkType();
   if (!inputContent) {
     return;
@@ -32,18 +32,14 @@ deleteFormSectionDOM.addEventListener("submit", (e) => {
   for (let i = 0; i < positiveElementCount; i++) {
     const e = positiveListDOM.children[i].querySelector("input");
     if (e.checked) {
-      deleteItemIdList.push({
-        _id: e.value
-      });
+      deleteItemIdList.push(e.value);
     }
   }
   let negativeElementCount = negativeListDOM.childElementCount;
   for (let i = 0; i < negativeElementCount; i++) {
     const e = negativeListDOM.children[i].querySelector("input");
     if (e.checked) {
-      deleteItemIdList.push({
-        _id: e.value
-      });
+      deleteItemIdList.push(e.value);
     }
   }
   console.log("削除", deleteItemIdList);
@@ -51,6 +47,14 @@ deleteFormSectionDOM.addEventListener("submit", (e) => {
     deleteItemIdList: deleteItemIdList
   }
   onDelete(data);
+});
+
+/**
+ * テキスト入力時の処理
+ */
+inputTextDOM.addEventListener("change", (e) => {
+  console.log(e.target.value);
+  inputContent = e.target.value;
 });
 
 /**
@@ -67,6 +71,10 @@ function checkType () {
     }
   });
   return type;
+}
+
+function onClearText () {
+  inputTextDOM.value = '';
 }
 
 /**
@@ -142,6 +150,7 @@ function onSave () {
   (res) => {
     console.log(res);
     onSearch();
+    onClearText();
   },
   (err) => {
     console.log(err);
@@ -158,6 +167,7 @@ function onDelete (data) {
   },
   (res) => {
     console.log(res);
+    onSearch();
   },
   (err) => {
     console.log(err);

@@ -6,10 +6,9 @@ app.use(express.json());
 
 /** データの取得 */
 app.get("/ideas", async(req, res) => {
-  // DB内のデータすべて返す
-  const ideas = await ideaModel.find({});
-
   try {
+    // DB内のデータすべて返す
+    const ideas = await ideaModel.find({});
     res.send(ideas);
   } catch {
     res.status(500).send(err);
@@ -31,9 +30,9 @@ app.post("/idea", async(req, res) => {
 
 /** データの削除 */
 app.delete("/idea", async(req, res) => {
-  console.log("削除API", req.body);
-
+  console.log("削除API", req.body.deleteItemIdList);
   try {
+    await ideaModel.deleteMany({ _id: req.body.deleteItemIdList });
     res.send();
   } catch {
     res.status(500).send(err);

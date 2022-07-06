@@ -8,15 +8,17 @@
   <title>Document</title>
 </head>
 <body>
-  <div>
+  <div class="main-container">
     <h1>IDEA STACKER</h1>
     <div class="regist-form-container">
       <form class="regist-form-section">
         <input type="radio" name="idea-type" value="1" checked id="positive-radio">ポジティブ
         <input type="radio" name="idea-type" value="2" id="negative-radio">ネガティブ
-        <p>アイデア</p>
-        <input type="text" id="idea-text">
-        <button type="submit" id="add-button">追加</button>
+        <div>
+          <span>アイデア</span>
+          <input type="text" id="idea-text">
+          <button type="submit" id="add-button">追加</button>
+        </div>
       </form>
     </div>
     <div class="list-container">
